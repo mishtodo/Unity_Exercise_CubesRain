@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -6,8 +7,10 @@ public class CubeSpawner : MonoBehaviour
     [SerializeField] private Cube _cubePrefab;
 
     private ObjectPool<Cube> _cubesPool;
-    private int _poolDefaultCapacity = 5;
-    private int _poolMaxCapacity = 5;
+    private int _poolDefaultCapacity = 10;
+    private int _poolMaxCapacity = 20;
+    private int _randomScale = 10;
+    private float _spawnRepeatRate = 1.0f;
 
     private void Awake()
     {
@@ -23,7 +26,7 @@ public class CubeSpawner : MonoBehaviour
 
     private void Start()
     {
-        InvokeRepeating(nameof(GetCube), 0.0f, 0.3f);
+        InvokeRepeating(nameof(GetCube), 0.0f, _spawnRepeatRate);
     }
 
     public void ActionOnGet(Cube cube)
@@ -33,10 +36,10 @@ public class CubeSpawner : MonoBehaviour
         cube.SetActive(true);
     }
 
-   public void ActionOnRelease(Cube cube)
-   {
+    public void ReleaseCube(Cube cube)
+    {
         _cubesPool.Release(cube);
-   }
+    }
 
     private void GetCube()
     {

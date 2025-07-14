@@ -3,13 +3,13 @@ using UnityEngine;
 
 public class ReturnToPool : MonoBehaviour
 {
-    [SerializeField] private GameObject _dyingZone;
+    [SerializeField] private GameObject[] _dyingZones;
 
     public event Action<Cube> Entered;
 
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision collision)
     {
-        if (other.TryGetComponent(out Cube cube))
+        if (collision.collider.TryGetComponent(out Cube cube))
             Entered?.Invoke(cube);
     }
 }

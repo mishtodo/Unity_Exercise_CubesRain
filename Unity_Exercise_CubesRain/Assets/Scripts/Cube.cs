@@ -32,6 +32,7 @@ public class Cube : MonoBehaviour
     {
         HaveHitted = haveHitted;
     }
+
     public void InitializePosition(Vector3 position)
     {
         Transform.position = position;
