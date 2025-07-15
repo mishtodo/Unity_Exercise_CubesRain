@@ -8,6 +8,7 @@ public class Cube : MonoBehaviour
     public bool HaveHitted { get; private set; }
 
     public event Action Hitted;
+    public event Action<Cube> Dying;
 
     private void Awake()
     {
@@ -20,6 +21,7 @@ public class Cube : MonoBehaviour
         {
             HaveHitted = true;
             Hitted?.Invoke();
+            Dying?.Invoke(this);
         }
     }
 
