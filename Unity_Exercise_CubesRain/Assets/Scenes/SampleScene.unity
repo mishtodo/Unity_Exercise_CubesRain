@@ -564,7 +564,6 @@ GameObject:
   - component: {fileID: 1131905823}
   - component: {fileID: 1131905822}
   - component: {fileID: 1131905825}
-  - component: {fileID: 1131905824}
   m_Layer: 0
   m_Name: CubeSpawner
   m_TagString: Untagged
@@ -608,20 +607,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1131905824
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1131905821}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29d60de844e928f4ea469c94ccba7b8b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _cubeSpawner: {fileID: 1131905825}
-  _returnToPools: {fileID: 0}
 --- !u!114 &1131905825
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -635,6 +620,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cubePrefab: {fileID: 892287554685633093, guid: 5c2c68398ac34f7428455b09795bfb8c, type: 3}
+  _spawnRepeatRate: 0.5
 --- !u!1 &1306816608
 GameObject:
   m_ObjectHideFlags: 0
