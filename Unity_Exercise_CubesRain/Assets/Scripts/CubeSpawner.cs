@@ -27,7 +27,7 @@ public class CubeSpawner : MonoBehaviour
 
     private void Start()
     {
-        InvokeRepeating(nameof(GetCube), 0.0f, _spawnRepeatRate);
+        RestartCoroutine();
     }
 
     public void StopCoroutine()
@@ -36,20 +36,20 @@ public class CubeSpawner : MonoBehaviour
             StopCoroutine(_coroutine);
     }
 
-    private void RestartCoroutine(Cube cube)
+    private void RestartCoroutine()
     {
-        _coroutine = StartCoroutine(WaitBeforeDestroyCube(cube));
+        _coroutine = StartCoroutine(SpawnCube());
     }
 
-    private IEnumerator WaitBeforeDestroyCube(Cube cube)
+    private IEnumerator SpawnCube()
     {
-        float minDestroyDelay = 2;
-        float maxDestroyDelay = 5;
-        float RandomDelay = Random.Range(minDestroyDelay, maxDestroyDelay);
-        var wait = new WaitForSecondsRealtime(RandomDelay);
+        var wait = new WaitForSecondsRealtime(_spawnRepeatRate);
 
-        yield return wait;
-        ReleaseCube(cube);
+        while (true)
+        {
+            yield return wait;
+            GetCube();
+        }
     }
 
     private Vector3 CalculateRandomPosition()
@@ -61,7 +61,7 @@ public class CubeSpawner : MonoBehaviour
 
     private void ActionOnGet(Cube cube)
     {
-        cube.Dying += RestartCoroutine;
+        cube.Dying += ReleaseCube;
         cube.InitializeHitted(false);
         cube.InitializePosition(CalculateRandomPosition());
         cube.SetActive(true);
@@ -69,7 +69,9 @@ public class CubeSpawner : MonoBehaviour
 
     private void ActionOnRelease(Cube cube)
     {
-        cube.Dying -= RestartCoroutine;
+        cube.Dying -= ReleaseCube;
+        cube.InitializePosition(transform.position);
+        cube.InitializeRotation(transform.rotation);
         cube.SetActive(false);
     }
 
