@@ -5,6 +5,7 @@ using UnityEngine.Pool;
 public class CubeSpawner : MonoBehaviour
 {
     [SerializeField] private Cube _cubePrefab;
+    [SerializeField] private GameObject _objectPull;
     [SerializeField] private float _spawnRepeatRate = 0.5f;
 
     private ObjectPool<Cube> _cubesPool;
@@ -45,7 +46,7 @@ public class CubeSpawner : MonoBehaviour
     {
         var wait = new WaitForSecondsRealtime(_spawnRepeatRate);
 
-        while (true)
+        while (enabled)
         {
             yield return wait;
             GetCube();
@@ -70,8 +71,8 @@ public class CubeSpawner : MonoBehaviour
     private void ActionOnRelease(Cube cube)
     {
         cube.Dying -= ReleaseCube;
-        cube.InitializePosition(transform.position);
-        cube.InitializeRotation(transform.rotation);
+        cube.InitializePosition(_objectPull.transform.position);
+        cube.InitializeRotation(_objectPull.transform.rotation);
         cube.SetActive(false);
     }
 

@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Cube : MonoBehaviour
 {
-    [SerializeField] private string _compareTagToCollision = "Environment";
-
     private Coroutine _coroutine;
 
     public bool HaveHitted { get; private set; }
@@ -15,7 +13,7 @@ public class Cube : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (HaveHitted == false && collision.collider.CompareTag(_compareTagToCollision))
+        if (HaveHitted == false && collision.gameObject.TryGetComponent<Platform>(out Platform platform))
         {
             HaveHitted = true;
             Hitted?.Invoke();
