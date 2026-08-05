@@ -2,14 +2,17 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class Cube : MonoBehaviour
+public class Cube : SpawnableObject
 {
     private Coroutine _coroutine;
 
     public bool HaveHitted { get; private set; }
-
     public event Action Hitted;
-    public event Action<Cube> Dying;
+
+    private void OnEnable()
+    {
+        HaveHitted = false;
+    }
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -21,27 +24,7 @@ public class Cube : MonoBehaviour
         }
     }
 
-    public void SetActive(bool state) 
-    {
-        gameObject.SetActive(state);
-    }
-
-    public void InitializeHitted(bool haveHitted)
-    {
-        HaveHitted = haveHitted;
-    }
-
-    public void InitializePosition(Vector3 position)
-    {
-        transform.position = position;
-    }
-
-    public void InitializeRotation(Quaternion rotation)
-    {
-       transform.rotation = rotation;
-    }
-
-    public void StopCoroutine()
+    public void StopSpawnCoroutine()
     {
         if (_coroutine != null)
             StopCoroutine(_coroutine);
@@ -60,6 +43,6 @@ public class Cube : MonoBehaviour
         var wait = new WaitForSecondsRealtime(RandomDelay);
 
         yield return wait;
-        Dying?.Invoke(this);
+        NotifyDying();
     }
 }
