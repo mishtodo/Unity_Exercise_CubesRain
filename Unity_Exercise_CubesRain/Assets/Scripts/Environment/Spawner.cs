@@ -12,13 +12,15 @@ public class Spawner<T> : MonoBehaviour where T : SpawnableObject
     private int _poolMaxCapacity = 20;
 
     public event Action<Vector3> ObjectReleased;
+    public event Action MetersChanged;
     public int TotalSpawned { get; private set; }
+    public int TotalCreated { get; private set; }
     public int ActiveCount => _pool.CountActive;
 
     private void Awake()
     {
         _pool = new ObjectPool<T>(
-            createFunc: () => Instantiate(_prefab, Vector3.zero, Quaternion.identity),
+            createFunc: () => CreateFunc(),
             actionOnGet: (T) => ActionOnGet(T),
             actionOnRelease: (T) => ActionOnRelease(T),
             actionOnDestroy: (T) => Destroy(T),
@@ -35,11 +37,20 @@ public class Spawner<T> : MonoBehaviour where T : SpawnableObject
         return obj;
     }
 
+    private T CreateFunc()
+    {
+        TotalCreated++;
+        MetersChanged?.Invoke();
+        T obj = Instantiate(_prefab, Vector3.zero, Quaternion.identity);
+        return obj;
+    }
+
     private void ActionOnGet(T obj)
     {
         TotalSpawned++;
         obj.OnDying += HandleObjectDestroyed;
         obj.gameObject.SetActive(true);
+        MetersChanged?.Invoke();
     }
 
     private void ActionOnRelease(T obj)
@@ -48,6 +59,7 @@ public class Spawner<T> : MonoBehaviour where T : SpawnableObject
         obj.InitializePosition(_objectPool.transform.position);
         obj.InitializeRotation(_objectPool.transform.rotation);
         obj.gameObject.SetActive(false);
+        MetersChanged?.Invoke();
     }
 
     private void HandleObjectDestroyed(SpawnableObject obj)

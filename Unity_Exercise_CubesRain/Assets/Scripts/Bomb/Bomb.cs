@@ -4,8 +4,8 @@ using UnityEngine;
 [RequireComponent(typeof(Renderer), typeof(Rigidbody))]
 public class Bomb : SpawnableObject
 {
-    [SerializeField] private float _explosionRadius = 50f;
-    [SerializeField] private float _explosionForce = 850f;
+    [SerializeField] private float _explosionRadius = 7f;
+    [SerializeField] private float _explosionForce = 700f;
     [SerializeField] private Material _opaqueMaterial;
     [SerializeField] private Material _fadeMaterial;
 

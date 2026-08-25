@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 969315535817442844}
   - component: {fileID: 6311324934824512212}
   - component: {fileID: 4291365176946168460}
-  - component: {fileID: 6411088113032135146}
   - component: {fileID: 7391096981950695133}
   - component: {fileID: 8406143025378418093}
   m_Layer: 0
@@ -99,22 +98,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 857c7f765194e794a9c88aad6ff7ea7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _explosionRadius: 5
+  _explosionRadius: 7
   _explosionForce: 700
-  _opaqueMaterial: {fileID: 2100000, guid: eaf4647eab55b194cbe1f7f020de7ee4, type: 2}
-  _fadeMaterial: {fileID: 2100000, guid: d4ed9227af524e4418870cf3fb574da5, type: 2}
---- !u!114 &6411088113032135146
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 502065704221913489}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c121d01925cb2ef4e80db0b8502da214, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   _opaqueMaterial: {fileID: 2100000, guid: eaf4647eab55b194cbe1f7f020de7ee4, type: 2}
   _fadeMaterial: {fileID: 2100000, guid: d4ed9227af524e4418870cf3fb574da5, type: 2}
 --- !u!135 &7391096981950695133
