@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(Renderer), typeof(Material), typeof(Rigidbody))]
+[RequireComponent(typeof(Renderer), typeof(Rigidbody))]
 public class Bomb : SpawnableObject
 {
     [SerializeField] private float _explosionRadius = 50f;
@@ -49,7 +49,7 @@ public class Bomb : SpawnableObject
 
             Color color = _renderer.material.color;
             color.a = alpha;
-            _fadeMaterial.color = color;
+            _renderer.material.color = color;
 
             yield return null;
         }
