@@ -6,22 +6,19 @@ public class Bomb : SpawnableObject
 {
     [SerializeField] private float _explosionRadius = 50f;
     [SerializeField] private float _explosionForce = 850f;
+    [SerializeField] private Material _opaqueMaterial;
+    [SerializeField] private Material _fadeMaterial;
 
     private Renderer _renderer;
-    private Material _material;
-    private Color _initialColor;
     private Coroutine _coroutine;
 
     private void Awake()
     {
         _renderer = GetComponent<Renderer>();
-        _material = _renderer.material;
-        _initialColor = _material.color;
     }
 
     private void OnEnable()
     {
-        _material.color = _initialColor;
         SetRenderModeToOpaque();
         RestartCoroutine();
     }
@@ -50,9 +47,9 @@ public class Bomb : SpawnableObject
 
             float alpha = Mathf.Lerp(1f, 0f, elapsed / duration);
 
-            Color color = _material.color;
+            Color color = _renderer.material.color;
             color.a = alpha;
-            _material.color = color;
+            _fadeMaterial.color = color;
 
             yield return null;
         }
@@ -77,26 +74,12 @@ public class Bomb : SpawnableObject
 
     private void SetRenderModeToFade()
     {
-        _material.SetOverrideTag("RenderType", "Transparent");
-        _material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
-        _material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-        _material.SetInt("_ZWrite", 0);
-        _material.DisableKeyword("_ALPHATEST_ON");
-        _material.EnableKeyword("_ALPHABLEND_ON");
-        _material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
-        _material.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
+        _renderer.material = _fadeMaterial;
     }
 
     private void SetRenderModeToOpaque()
     {
-        _material.SetOverrideTag("RenderType", "");
-        _material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
-        _material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
-        _material.SetInt("_ZWrite", 1);
-        _material.DisableKeyword("_ALPHATEST_ON");
-        _material.DisableKeyword("_ALPHABLEND_ON");
-        _material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
-        _material.renderQueue = -1;
+        _renderer.material = _opaqueMaterial;
     }
 
     private void OnDrawGizmos()
