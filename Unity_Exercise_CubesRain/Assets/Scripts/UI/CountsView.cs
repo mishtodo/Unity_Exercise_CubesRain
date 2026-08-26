@@ -1,34 +1,46 @@
+using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
 public class CountsView : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI _spawnedCounts;
-    [SerializeField] private TextMeshProUGUI _createdCounts;
-    [SerializeField] private TextMeshProUGUI _activeCubesCounts;
-    [SerializeField] private TextMeshProUGUI _activeBombCounts;
-    [SerializeField] private BombSpawner _bombSpawner;
-    [SerializeField] private CubeSpawner _cubeSpawner;
+    [SerializeField] private TextMeshProUGUI _totalSpawnedCounts;
+    [SerializeField] private TextMeshProUGUI _totalCreatedCounts;
+    [SerializeField] private List<BaseSpawner> _spawners;
 
     private void OnEnable()
     {
-        _bombSpawner.MetersChanged += UpdateDisplay;
-        _cubeSpawner.MetersChanged += UpdateDisplay;
+        foreach (var spawner in _spawners)
+        {
+            if (spawner != null) spawner.MetersChanged += UpdateDisplay;
+        }
 
         UpdateDisplay();
     }
 
     private void OnDisable()
     {
-        _bombSpawner.MetersChanged -= UpdateDisplay;
-        _cubeSpawner.MetersChanged -= UpdateDisplay;
+        foreach (var spawner in _spawners)
+        {
+            if (spawner != null) spawner.MetersChanged -= UpdateDisplay;
+        }
     }
 
     private void UpdateDisplay()
     {
-        _spawnedCounts.text = (_bombSpawner.TotalSpawned + _cubeSpawner.TotalSpawned).ToString();
-        _createdCounts.text = (_bombSpawner.TotalCreated + _cubeSpawner.TotalCreated).ToString();
-        _activeCubesCounts.text = _cubeSpawner.ActiveCount.ToString();
-        _activeBombCounts.text = _bombSpawner.ActiveCount.ToString();
+        int totalSpawned = 0;
+        int totalCreated = 0;
+
+        foreach (var spawner in _spawners)
+        {
+            if (spawner != null)
+            {
+                totalSpawned += spawner.TotalSpawned;
+                totalCreated += spawner.TotalCreated;
+            }
+        }
+
+        _totalSpawnedCounts.text = totalSpawned.ToString();
+        _totalCreatedCounts.text = totalCreated.ToString();
     }
 }

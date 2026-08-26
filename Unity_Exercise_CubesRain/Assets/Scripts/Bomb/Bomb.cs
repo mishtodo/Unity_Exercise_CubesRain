@@ -17,7 +17,7 @@ public class Bomb : SpawnableObject
         _renderer = GetComponent<Renderer>();
     }
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
         SetRenderModeToOpaque();
         RestartCoroutine();

@@ -9,8 +9,9 @@ public class Cube : SpawnableObject
     public bool HaveHitted { get; private set; }
     public event Action Hitted;
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        base.InitializeVelocity(Vector3.zero);
         HaveHitted = false;
     }
 

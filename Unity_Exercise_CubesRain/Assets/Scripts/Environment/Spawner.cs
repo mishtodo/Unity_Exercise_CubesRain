@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Pool;
 
-public class Spawner<T> : MonoBehaviour where T : SpawnableObject
+public class Spawner<T> : BaseSpawner where T : SpawnableObject
 {
     [SerializeField] private T _prefab;
     [SerializeField] private GameObject _objectPool;
@@ -10,12 +10,14 @@ public class Spawner<T> : MonoBehaviour where T : SpawnableObject
     private ObjectPool<T> _pool;
     private int _poolDefaultCapacity = 10;
     private int _poolMaxCapacity = 20;
+    private int _totalSpawned;
+    private int _totalCreated;
 
     public event Action<Vector3> ObjectReleased;
-    public event Action MetersChanged;
-    public int TotalSpawned { get; private set; }
-    public int TotalCreated { get; private set; }
-    public int ActiveCount => _pool.CountActive;
+    public override event Action MetersChanged;
+    public override int TotalSpawned => _totalSpawned;
+    public override int TotalCreated => _totalCreated;
+    public override int ActiveCount => _pool.CountActive;
 
     private void Awake()
     {
@@ -39,7 +41,7 @@ public class Spawner<T> : MonoBehaviour where T : SpawnableObject
 
     private T CreateFunc()
     {
-        TotalCreated++;
+        _totalCreated++;
         MetersChanged?.Invoke();
         T obj = Instantiate(_prefab, Vector3.zero, Quaternion.identity);
         return obj;
@@ -47,7 +49,7 @@ public class Spawner<T> : MonoBehaviour where T : SpawnableObject
 
     private void ActionOnGet(T obj)
     {
-        TotalSpawned++;
+        _totalSpawned++;
         obj.OnDying += HandleObjectDestroyed;
         obj.gameObject.SetActive(true);
         MetersChanged?.Invoke();
